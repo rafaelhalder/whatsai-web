@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
-import { validateLogin } from '../utils/validateLogin';
-import { LoginPayload } from '../types/authTypes';
 import { Mail, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -11,32 +9,13 @@ import toast from 'react-hot-toast';
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters")
+  password: z.string().min(6, "Password must be at least 6 characters")
 });
 
 function LoginForm() {
-  // const [form, setForm] = useState<LoginPayload>({ email: '', password: '' });
-  // const [formError, setFormError] = useState<string | null>(null);
-  // const { handleLogin, loading, error } = useLogin();
-
-  // async function onSubmit(e: React.FormEvent) {
-  //   e.preventDefault();
-  //   const validation = validateLogin(form);
-  //   if (validation) {
-  //     setFormError(validation);
-  //     return;
-  //   }
-  //   setFormError(null);
-  //   const result = await handleLogin(form);
-  //   if (result) {
-  //     alert('Login realizado com sucesso!');
-  //   }
-  // }
-
   const [showPassword, setShowPassword] = useState(false);
-  // const navigate = useNavigate();
-
-  // const login = useAuthStore((state) => state.login);
+  const navigate = useNavigate();
+  const { handleLogin, loading, error } = useLogin();
 
   const {
     register,
@@ -52,53 +31,19 @@ function LoginForm() {
     resolver: zodResolver(schema)
   });
 
-  //   const onSubmit = async (data: any) => {
-  //     console.log(data);
-  //     try {
-  //         const result = {  success: true,error: 'asdf' }; // Simulate login success
-  //         // const result = await login(data.email, data.password);
-  //         // Check if login was actually successful
-  //         if (result.success) {
-  //             toast.success('Successfully LoggedIn!');
-  //             reset();
-  //             navigate("/"); // Redirect to dashboard or home page
-  //         } else {
-  //             // Handle auth failure based on returned error
-  //             toast.error(result.error || "Login failed");
-  //             setError("root", {
-  //                 message: result.error || "Login failed"
-  //             });
-  //         } 
-  //     } catch (error : any) {
-  //         // Error handling remains the same
-  //         if (error.response) {
-  //             const { status, data } = error.response;
-
-  //             if (status === 401) {
-  //                 setError("password", {
-  //                     message: "Invalid email or password"
-  //                 });
-  //             } else if (status === 404) {
-  //                 setError("email", {
-  //                     message: "Email not registered"
-  //                 });
-  //             } else if (data?.message) {
-  //                 setError("root", {
-  //                     message: data.message
-  //                 });
-  //             } else {
-  //                 setError("root", {
-  //                     message: "An unexpected error occurred"
-  //                 });
-  //             }
-  //         toast.error(data.message || "An unexpected error occurred");
-  //         } else {
-  //             setError("root", {
-  //                 message: "Network error. Please try again."
-  //             });
-  //         }
-  //     }
-  // };
+  const onSubmit = async (data: { email: string; password: string }) => {
+    const result = await handleLogin(data);
+    if (result) {
+      toast.success('Login realizado com sucesso!');
+      reset();
+      navigate("/dashboard");
+    } else {
+      setError("root", {
+        message: error || "Login failed"
+      });
+      toast.error(error || "Login failed");
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -106,11 +51,16 @@ function LoginForm() {
 
   return (
     <div className='w-full'>
-      <form className='space-y-4 md:space-y-6'>
+      <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit(onSubmit)}>
         {/* Show general form errors */}
         {errors.root && (
-          <div className={`p-3 rounded text-sm md:text-base bg-red-50 border border-red-400 text-red-700`}>
+          <div className="p-3 rounded text-sm md:text-base bg-red-50 border border-red-400 text-red-700">
             {errors.root.message}
+          </div>
+        )}
+        {error && (
+          <div className="p-3 rounded text-sm md:text-base bg-red-50 border border-red-400 text-red-700">
+            {error}
           </div>
         )}
 
@@ -131,7 +81,7 @@ function LoginForm() {
             />
           </div>
           {errors.email && (
-            <p className={`mt-1 text-xs md:text-sm "text-red-600"`}>
+            <p className="mt-1 text-xs md:text-sm text-red-600">
               {errors.email.message}
             </p>
           )}
@@ -148,7 +98,7 @@ function LoginForm() {
             <input
               id="password"
               {...register("password")}
-              type={showPassword == true ? "text" : "password"}
+              type={showPassword ? "text" : "password"}
               placeholder="••••••"
               className='w-full pl-10 pr-10 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white border-gray-300 text-gray-900'
             />
@@ -165,7 +115,7 @@ function LoginForm() {
             </button>
           </div>
           {errors.password && (
-            <p className={`mt-1 text-xs md:text-sm "text-red-600"`}>
+            <p className="mt-1 text-xs md:text-sm text-red-600">
               {errors.password.message}
             </p>
           )}
@@ -176,10 +126,10 @@ function LoginForm() {
           </a>
         </div>
         <button type='submit'
-        disabled={isSubmitting}
-        className='w-full py-2 px-4 text-sm md:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-600 hover:bg-emerald-700 focus:ring-offset-2'
+          disabled={isSubmitting || loading}
+          className='w-full py-2 px-4 text-sm md:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-600 hover:bg-emerald-700 focus:ring-offset-2'
         >
-          {isSubmitting ? (
+          {isSubmitting || loading ? (
             <span className="flex items-center justify-center">
               <span className='loading loading-infinity loading-lg'>
                 Logging in...
@@ -201,17 +151,15 @@ function LoginForm() {
           </span>
         </div>
       </div>
-        <button
-          type='button'
-          onClick={()=> window.location.href = '/register'}
-          className='w-full flex items-center justify-center gap-2 py-2 px-4 border rounded-md transition-colors text-sm md:text-base bg-white border-gray-300 hover:bg-gray-50 text-gray-700'
-        >
-          <span className='ml-1'>Cadastrar-se</span>
-        </button>
-      </div>
+      <button
+        type='button'
+        onClick={() => window.location.href = '/register'}
+        className='w-full flex items-center justify-center gap-2 py-2 px-4 border rounded-md transition-colors text-sm md:text-base bg-white border-gray-300 hover:bg-gray-50 text-gray-700'
+      >
+        <span className='ml-1'>Cadastrar-se</span>
+      </button>
+    </div>
   );
 }
+
 export default LoginForm;
-function useAuthStore(arg0: (state: any) => any) {
-  throw new Error('Function not implemented.');
-}

@@ -12,6 +12,7 @@ export function useLogin(){
     setError(null);
     try {
       const response = await authService.login(payload);
+      localStorage.setItem("token", response.token);
       return response;
     } catch (error: any) {
       setError(error.message || "An error occurred during login");

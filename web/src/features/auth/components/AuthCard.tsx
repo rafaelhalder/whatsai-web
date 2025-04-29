@@ -35,9 +35,9 @@ function AuthCard({ children, title, subtitle, footerText, linkText, linkTo }: A
         <div className="mt-6 text-center">
           <p className={`text-gray-600`}>
             {footerText}{' '}
-            {/* <Link to={linkTo} className={`font-medium transition-colors text-emerald-600 hover:text-emerald-700`}> */}
+            <Link to={linkTo} className={`font-medium transition-colors text-emerald-600 hover:text-emerald-700`}>
               {linkText}
-            {/* </Link> */}
+            </Link>
           </p>
         </div>
         
