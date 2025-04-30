@@ -1,42 +1,33 @@
 import { AuthService } from "./AuthService";
 import { LoginPayload, LoginResponse } from "../types/authTypes";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const authServiceImpl: AuthService = {
   async login(payload: LoginPayload): Promise<LoginResponse> {
-        // Simulação de chamada à API
-        return new Promise((resolve, reject) => {
-          
-
-
-          setTimeout(() => {
-            if (payload.email === 'admin@admin.com' && payload.password === '123456') {
-              resolve({
-                token: 'fake-jwt-token',
-                user: {
-                  id: '1',
-                  name: 'Admin',
-                  email: payload.email,
-                },
-              });
-            } else {
-              reject(new Error('Credenciais inválidas'));
-            }
-          }, 1000);
-        });
-    // const response = await fetch("localhost:3000/authenticate", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
-
-    // if (!response.ok) {
-    //   throw new Error("Login failed");
-    // }
-
-    // const data = await response.json();
-    // return data;
+    try {
+      const response = await axios.post<{token: string}>(
+        `${API_URL}/authenticate`,
+        payload,
+        {
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      return {
+        token: response.data.token,
+        user: {
+          id: "",
+          name: "",
+          email: payload.email,
+        },
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Login failed";
+      throw new Error(message);
+    }
   }
 
 

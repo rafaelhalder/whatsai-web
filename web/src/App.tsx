@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import AuthContainer from './features/auth/components/AuthContainer';
 import AuthCard from './features/auth/components/AuthCard';
 import { LoginPage } from './features/auth/pages/LoginPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
+import { userAuthStore } from './features/auth/store/authStore';
 
 function RegisterPage() {
   return (
@@ -23,10 +24,14 @@ function RegisterPage() {
 }
 
 function DashboardPage() {
+const logout = userAuthStore((state) => state.logout);
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
       <p>Bem-vindo ao painel do usuário!</p>
+      <button className="btn btn-secondary mt-4" onClick={() => logout()}>Sair</button>
+      {/* Adicione mais conteúdo do painel aqui */}
     </div>
   );
 }
@@ -44,6 +49,30 @@ function HomePage() {
     </div>
   );
 }
+
+const AppLayout = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  return (
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
+      {/* Background for dark and light modes - only shown on non-homepage routes */}
+      {!isHomePage && (
+        <>
+        <div className="fixed inset-0 -z-10 h-full w-full bg-black [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]"></div>
+        </>
+      )}
+
+      {/* <Header /> */}
+      <main className="flex-grow w-full">
+        {/* Use Outlet instead of nested Routes */}
+        {/* <Outlet /> */}
+      </main>
+      {/* <Footer /> */}
+    </div>
+  );
+};
+
 
 export function App() {
   return (
