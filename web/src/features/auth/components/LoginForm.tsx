@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useLogin } from '../hooks/useLogin';
 import { Mail, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { userAuthStore } from '../store/authStore';
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -15,7 +15,9 @@ const schema = z.object({
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { handleLogin, loading, error } = useLogin();
+  const login = userAuthStore((state) => state.login)
+  const loading = userAuthStore((state) => state.loading)
+  const error = userAuthStore((state) => state.error)
 
   const {
     register,
@@ -32,10 +34,10 @@ function LoginForm() {
   });
 
   const onSubmit = async (data: { email: string; password: string }) => {
-    const result = await handleLogin(data);
-    if (result) {
+    const success = await login(data);
+    if (success) {
       toast.success('Login realizado com sucesso!');
-      reset();
+      reset(); 
       navigate("/dashboard");
     } else {
       setError("root", {

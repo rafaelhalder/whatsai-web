@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { AuthServiceProvider } from './features/auth/services/AuthServiceProvider';
 import AuthContainer from './features/auth/components/AuthContainer';
 import AuthCard from './features/auth/components/AuthCard';
 import { LoginPage } from './features/auth/pages/LoginPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Toaster } from 'react-hot-toast';
 
 function RegisterPage() {
   return (
@@ -48,7 +48,24 @@ function HomePage() {
 export function App() {
   return (
     <BrowserRouter>
-      <AuthServiceProvider>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 1000,
+          success: {
+            style: {
+              background: '#10b981',
+              color: 'white',
+            },
+          },
+          error: {
+            style: {
+              background: '#ef4444',
+              color: 'white',
+            },
+          },
+        }}
+      />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -62,7 +79,6 @@ export function App() {
             }
           />
         </Routes>
-      </AuthServiceProvider>
     </BrowserRouter>
   );
 }

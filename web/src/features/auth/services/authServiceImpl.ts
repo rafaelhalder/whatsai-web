@@ -5,6 +5,9 @@ export const authServiceImpl: AuthService = {
   async login(payload: LoginPayload): Promise<LoginResponse> {
         // Simulação de chamada à API
         return new Promise((resolve, reject) => {
+          
+
+
           setTimeout(() => {
             if (payload.email === 'admin@admin.com' && payload.password === '123456') {
               resolve({
