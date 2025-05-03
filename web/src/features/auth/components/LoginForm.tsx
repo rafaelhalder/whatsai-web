@@ -79,7 +79,7 @@ function LoginForm() {
               {...register("email")}
               type='email'
               placeholder='Digite seu e-mail'
-              className='w-full pl-10 pr-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white border-gray-300 text-gray-900'
+              className='w-full pl-10 pr-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 bg-white border-gray-300 text-gray-900'
             />
           </div>
           {errors.email && (
@@ -102,7 +102,7 @@ function LoginForm() {
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="••••••"
-              className='w-full pl-10 pr-10 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white border-gray-300 text-gray-900'
+              className='w-full pl-10 pr-10 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 bg-white border-gray-300 text-gray-900'
             />
             <button
               type='button'
@@ -123,13 +123,13 @@ function LoginForm() {
           )}
         </div>
         <div className='flex items-center justify-end'>
-          <a href="#" className='text-xs md:text-sm text-emerald-600 hover:text-emerald-700'>
+          <a href="#" className='text-xs md:text-sm text-cyan-600 hover:text-cyan-700'>
             Forget your password?
           </a>
         </div>
         <button type='submit'
           disabled={isSubmitting || loading}
-          className='w-full py-2 px-4 text-sm md:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-600 hover:bg-emerald-700 focus:ring-offset-2'
+          className='w-full py-2 px-4 text-sm md:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-cyan-600 hover:bg-cyan-700 focus:ring-offset-2'
         >
           {isSubmitting || loading ? (
             <span className="flex items-center justify-center">

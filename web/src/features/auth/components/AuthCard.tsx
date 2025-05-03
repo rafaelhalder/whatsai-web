@@ -16,7 +16,7 @@ function AuthCard({ children, title, subtitle, footerText, linkText, linkTo }: A
     <div className={`w-full flex flex-col items-center justify-center px-4 md:px-6 lg:px-8 py-8 lg:py-12 relative bg-white`}>
       
       {/* Top decorative element - smaller on mobile */}
-      <div className={`absolute top-0 right-0 w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-bl-fullbg-emerald-100`}></div>
+      <div className={`absolute top-0 right-0 w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-bl-fullbg-cyan-100`}></div>
       
       {/* Main content container */}
       <div className="w-full max-w-md z-10">
@@ -35,7 +35,7 @@ function AuthCard({ children, title, subtitle, footerText, linkText, linkTo }: A
         <div className="mt-6 text-center">
           <p className={`text-gray-600`}>
             {footerText}{' '}
-            <Link to={linkTo} className={`font-medium transition-colors text-emerald-600 hover:text-emerald-700`}>
+            <Link to={linkTo} className={`font-medium transition-colors text-cyan-600 hover:text-cyan-700`}>
               {linkText}
             </Link>
           </p>
@@ -50,7 +50,7 @@ function AuthCard({ children, title, subtitle, footerText, linkText, linkTo }: A
             {['Secure financial tracking', 'Easy budget management', 'Comprehensive financial insights'].map((feature, index) => (
               <li key={index} className={`flex items-center text-sm text-gray-600`}>
                 <svg 
-                  className={`h-4 w-4 mr-2 text-emerald-500`} 
+                  className={`h-4 w-4 mr-2 text-cyan-500`} 
                   fill="currentColor" 
                   viewBox="0 0 20 20">
                   <path fillRule="evenodd" 
@@ -65,7 +65,7 @@ function AuthCard({ children, title, subtitle, footerText, linkText, linkTo }: A
       </div>
       
       {/* Bottom decorative element - smaller on mobile */}
-      <div className={`absolute bottom-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-tr-full bg-emerald-100`}></div>
+      <div className={`absolute bottom-0 left-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-tr-full bg-cyan-100`}></div>
     </div>
   );
 }

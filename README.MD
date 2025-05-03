@@ -1,13 +1,17 @@
 components/: UI reutilizável e desacoplada da lógica.
-pages/: Composição de componentes, lógica de página, integração com rotas.
-hooks/: Lógica de estado e efeitos reutilizáveis.
-services/: Comunicação com APIs.
-types/: Tipos e interfaces TypeScript.
-utils/: Funções auxiliares.
 
+features/
+  [feature]/
+    components/: Componentes específicos da feature.
+    hooks/: Hooks reutilizáveis da feature.
+    services/: Comunicação com APIs da feature.
+    store/: Gerenciamento de estado da feature.
+    types/: Tipos e interfaces TypeScript da feature.
+    utils/: Funções auxiliares da feature.
 
-1. Tipos (types)
-// filepath: src/features/auth/types/authTypes.ts
+pages/: Páginas principais da aplicação (views), composição de componentes, lógica de página, integração com rotas globais.
 
-2. Interface do serviço (contrato)
-// filepath: src/features/auth/services/AuthService.ts
+hooks/: Hooks globais reutilizáveis.
+services/: Comunicação com APIs globais.
+types/: Tipos e interfaces TypeScript globais.
+utils/: Funções auxiliares globais.
